@@ -7,9 +7,8 @@ import axios from "axios";
 import { motion } from "framer-motion";
 
 interface Quote {
-  a: string;
-  q: string;
-  h: string;
+  author: string;
+  quote: string;
 }
 
 function App() {
@@ -20,7 +19,11 @@ function App() {
   }, []);
 
   const getNewQuote = async () => {
-    const response = await axios.get("https://zenquotes.io/api/random");
+    const response = await axios.get("https://api.api-ninjas.com/v1/quotes", {
+      headers: {
+        "X-api-key": "32h5tAjv59Uq8N7BRgsnzQ==WG16UTbOx0t5hwRD"
+      }
+    });
     setQuote(response.data[0]);
   };
 
@@ -29,7 +32,7 @@ function App() {
       try {
         await navigator.share({
           title: "Inspiring Quote",
-          text: `"${quote?.q}" - ${quote?.a}`,
+          text: `"${quote?.quote}" - ${quote?.author}`,
           url: window.location.href,
         });
       } catch (error) {
@@ -68,9 +71,9 @@ function App() {
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ duration: 0.5 }}
                   >
-                    "{quote?.q}"
+                    "{quote?.quote}"
                   </motion.p>
-                  <footer className="text-lg text-end text-gray-500">— {quote?.a}</footer>
+                  <footer className="text-lg text-end text-gray-500">— {quote?.author}</footer>
                 </blockquote>
               </div>
             </CardContent>
